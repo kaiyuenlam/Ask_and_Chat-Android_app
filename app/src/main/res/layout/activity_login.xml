@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.LoginActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:cardCornerRadius="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/main_ask"/>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardUI1"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/lightgrey">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/email_logo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/email"
+                android:layout_margin="10dp"/>
+
+            <EditText
+                android:id="@+id/email_input"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:textSize="15dp"
+                android:hint="Email"
+                android:inputType="text"
+                android:maxLines="1"
+                android:background="@null" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        android:layout_above="@id/cardUI2"
+        android:layout_marginBottom="-50dp"
+        android:layout_marginLeft="240dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardUI2"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/cardUI1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/lightgrey">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/password_logo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_baseline_lock_white"
+                android:layout_margin="10dp"/>
+
+            <EditText
+                android:id="@+id/password_input"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:textSize="15dp"
+                android:hint="Password"
+                android:inputType="text"
+                android:maxLines="1"
+                android:background="@null" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/loginBTN"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/cardUI2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/logoColor"
+        android:text="Sign in"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginBTN"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have any account? "
+            android:layout_below="@id/loginBTN"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/toSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Signup now"
+            android:textColor="@color/logoColor"
+            android:layout_below="@id/loginBTN"
+            android:layout_centerHorizontal="true" />
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

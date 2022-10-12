@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.HomeFragment">
+
+    <TextView
+        android:id="@+id/greeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HI, EEE4480!"
+        android:fontFamily="@font/varelaround_regular"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mainActivityUI_card1"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        app:cardCornerRadius="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        app:cardBackgroundColor="@color/lightgrey">
+
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="Search Question"
+            android:layout_marginLeft="15dp"
+            android:maxLines="1"
+            android:inputType="text"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/mainActivity_searchBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_search_24"
+        android:layout_toRightOf="@id/mainActivityUI_card1"
+        android:layout_marginTop="53dp"
+        android:layout_marginLeft="10dp"/>
+
+    <View
+        android:id="@+id/mainActivity_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgrey"
+        android:layout_below="@id/mainActivityUI_card1"
+        android:layout_marginTop="15dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainActivity_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/mainActivity_line"/>
+
+</RelativeLayout>

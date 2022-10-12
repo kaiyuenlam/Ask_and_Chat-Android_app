@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "76932118307",
+    "firebase_url": "https://eee4480-ask-and-chat-app-default-rtdb.firebaseio.com",
+    "project_id": "eee4480-ask-and-chat-app",
+    "storage_bucket": "eee4480-ask-and-chat-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76932118307:android:21d5bb74ee398e12bf3e96",
+        "android_client_info": {
+          "package_name": "com.example.askchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76932118307-s1gj41fqorketb81jvea1qt3n0h725fp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATXd80iwvafPW3x0ppzH57iTK8sYRyK0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76932118307-s1gj41fqorketb81jvea1qt3n0h725fp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

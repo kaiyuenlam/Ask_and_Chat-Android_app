@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_menu_home"
+            android:icon="@drawable/drawer_menu_home"
+            android:title="Home"/>
+
+        <item
+            android:id="@+id/drawer_menu_account"
+            android:icon="@drawable/drawer_menu_person"
+            android:title="My Account"/>
+
+        <item
+            android:id="@+id/drawer_menu_question"
+            android:icon="@drawable/drawer_menu_question"
+            android:title="My Question"/>
+
+        <item
+            android:id="@+id/drawer_menu_chat"
+            android:icon="@drawable/drawer_menu_chat"
+            android:title="Chat"/>
+
+        <item
+            android:id="@+id/drawer_menu_favor"
+            android:icon="@drawable/drawer_menu_star"
+            android:title="My favourite"/>
+
+    </group>
+</menu>
