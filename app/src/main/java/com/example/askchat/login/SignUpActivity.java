@@ -116,7 +116,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             User user = new User(userName, email);
                             Log.d(TAG, "Sign up successfully");
                             //Send user object to real time database
-                            FirebaseDatabase.getInstance().getReference()
+                            FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

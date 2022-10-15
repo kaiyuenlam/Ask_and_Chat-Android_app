@@ -1,11 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp">
+    android:layout_height="180dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
+        android:id="@+id/drawer_header_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/main_ask"/>
+        android:src="@color/logoColor"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/drawer_header_cardview_UI"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardCornerRadius="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp">
+
+        <ImageView
+            android:id="@+id/drawer_header_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/drawer_header_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User name"
+        android:layout_below="@id/drawer_header_cardview_UI"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:fontFamily="@font/ibmplexsans_regular"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/drawer_header_user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="user@email.com"
+        android:layout_below="@id/drawer_header_cardview_UI"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/ibmplexsans_regular"
+        android:textSize="16sp"
+        android:textColor="@color/white"/>
 
 </RelativeLayout>

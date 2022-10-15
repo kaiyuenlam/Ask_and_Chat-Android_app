@@ -9,20 +9,30 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.askchat.fragment.HomeFragment;
 import com.example.askchat.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ImageView imageViewFavor, imageViewChat, imageViewSetting;
+    CardView cardView_logoutButton;
 
     //Fragment
     private FragmentManager fragmentManager;
@@ -33,7 +43,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NavigationView navigationView;
     CustomDrawerButton imageViewNavigationDrawer;
 
-    CardView cardView_logoutButton;
+    //Firebase
+    private FirebaseUser firebaseUser;
+    private DatabaseReference databaseReference;
+    private String userID;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+
+    //User information
+    protected String userName;
+    protected String userEmail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +61,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();  //action bar hidden
         fragmentManager = getSupportFragmentManager();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        getUserInformation();
         bindView();
         setOnClickListener();
         initHomeFragment();
         setNavigationDrawer();
+    }
+
+    private void getUserInformation() {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        databaseReference = firebaseDatabase.getReference("Users");
+        userID = firebaseUser.getUid();
+
+        databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User userProfile = snapshot.getValue(User.class);
+
+                if (userProfile != null) {
+                    userName = userProfile.getUserName();
+                    userEmail = userProfile.getEmail();
+                    Log.d("GET USER INFORMATION", "successfully");
+                    Log.d("GET USER INFORMATION, user name", userName);
+                    Log.d("GET USER INFORMATION, user email", userEmail);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Unable to get user information", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void bindView() {
@@ -129,6 +178,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 imageViewNavigationDrawer.changeState();
             }
         });
+
+        //drawer header user information setup
+        View headerView = navigationView.getHeaderView(0);
+        ImageView imageViewBackground = headerView.findViewById(R.id.drawer_header_background);
+        ImageView imageViewIcon = headerView.findViewById(R.id.drawer_header_icon);
+        TextView textViewUserName = headerView.findViewById(R.id.drawer_header_user_name);
+        TextView textViewUserEmail = headerView.findViewById(R.id.drawer_header_user_email);
+        textViewUserEmail.setText("" + userEmail);
+        textViewUserName.setText("" + userName);
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
