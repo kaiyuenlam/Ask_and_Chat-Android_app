@@ -2,11 +2,13 @@ package com.example.askchat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.askchat.fragment.HomeFragment;
+import com.example.askchat.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ImageView imageViewFavor, imageViewChat, imageViewSetting;
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     CustomDrawerButton imageViewNavigationDrawer;
+
+    CardView cardView_logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageViewFavor = findViewById(R.id.favorBTN);
         imageViewChat = findViewById(R.id.chatBTN);
         imageViewSetting = findViewById(R.id.settingBTN);
+        cardView_logoutButton = findViewById(R.id.mainActivity_logoutBTN);
     }
 
     private void setOnClickListener() {
@@ -53,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageViewFavor.setOnClickListener(this);
         imageViewChat.setOnClickListener(this);
         imageViewSetting.setOnClickListener(this);
+        cardView_logoutButton.setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 imageViewSetting.setSelected(true);
                 break;
 
+            case R.id.mainActivity_logoutBTN:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+                break;
         }
         fragmentTransaction.commitAllowingStateLoss();
     }
