@@ -3,6 +3,7 @@ package com.example.askchat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,7 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.askchat.fragment.ChatFragment;
 import com.example.askchat.fragment.HomeFragment;
+import com.example.askchat.fragment.MyAccountFragment;
+import com.example.askchat.fragment.MyFavorFragment;
+import com.example.askchat.fragment.MyQuestionFragment;
+import com.example.askchat.fragment.SettingFragment;
 import com.example.askchat.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,8 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CardView cardView_logoutButton;
 
     //Fragment
+    private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
-    private Fragment fragmentHome;
+    private Fragment fragmentHome, fragmentMyAccount, fragmentMyQuestion, fragmentSetting, fragmentMyFavor, fragmentChat;
 
     //Navigation Drawer
     DrawerLayout drawerLayout;
@@ -51,9 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseDatabase firebaseDatabase;
 
     //User information
-    User userProfile;
-    protected String userName;
-    protected String userEmail;
 
 
     @Override
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction = fragmentManager.beginTransaction();
         hideAllFragment(fragmentTransaction);
 
         switch (view.getId()){
@@ -107,16 +111,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.favorBTN:
                 setAllSelectedFalse();
                 imageViewFavor.setSelected(true);
+                if (fragmentMyFavor == null) {
+                    fragmentMyFavor = new MyFavorFragment();
+                    fragmentTransaction.add(R.id.fragment_container_view, fragmentMyFavor);
+                } else {
+                    fragmentTransaction.show(fragmentMyFavor);
+                }
                 break;
 
             case R.id.chatBTN:
                 setAllSelectedFalse();
                 imageViewChat.setSelected(true);
+                if (fragmentChat == null) {
+                    fragmentChat = new ChatFragment();
+                    fragmentTransaction.add(R.id.fragment_container_view, fragmentChat);
+                } else {
+                    fragmentTransaction.show(fragmentChat);
+                }
                 break;
 
             case R.id.settingBTN:
                 setAllSelectedFalse();
                 imageViewSetting.setSelected(true);
+                if (fragmentSetting == null) {
+                    fragmentSetting = new SettingFragment();
+                    fragmentTransaction.add(R.id.fragment_container_view, fragmentSetting);
+                } else {
+                    fragmentTransaction.show(fragmentSetting);
+                }
                 break;
 
             case R.id.mainActivity_logoutBTN:
@@ -137,12 +159,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void hideAllFragment(FragmentTransaction fragmentTransaction) {
         if (fragmentHome != null) fragmentTransaction.hide(fragmentHome);
+        if (fragmentChat != null) fragmentTransaction.hide(fragmentChat);
+        if (fragmentMyAccount != null) fragmentTransaction.hide(fragmentMyAccount);
+        if (fragmentMyQuestion != null) fragmentTransaction.hide(fragmentMyQuestion);
+        if (fragmentMyFavor != null) fragmentTransaction.hide(fragmentMyFavor);
+        if (fragmentSetting != null) fragmentTransaction.hide(fragmentSetting);
     }
 
     private void initHomeFragment() {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        HomeFragment homeFragment = new HomeFragment();
-        fragmentTransaction.replace(R.id.fragment_container_view, homeFragment);
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentHome = new HomeFragment();
+        fragmentTransaction.add(R.id.fragment_container_view, fragmentHome);
         fragmentTransaction.commitAllowingStateLoss();
     }
 
@@ -170,11 +197,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userProfile = snapshot.getValue(User.class);
+                User userProfile = snapshot.getValue(User.class);
 
                 if (userProfile != null) {
-                    userName = userProfile.getUserName();
-                    userEmail = userProfile.getEmail();
+                    String userName = userProfile.getUserName();
+                    String userEmail = userProfile.getEmail();
                     textViewUserName.setText(userName);
                     textViewUserEmail.setText(userEmail);
                 }
@@ -189,24 +216,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                fragmentTransaction = fragmentManager.beginTransaction();
+                hideAllFragment(fragmentTransaction);
+                setAllSelectedFalse();
 
                 switch (item.getItemId()) {
                     case R.id.drawer_menu_home:
+                        if (fragmentHome == null) {
+                            fragmentHome = new HomeFragment();
+                            fragmentTransaction.add(R.id.fragment_container_view, fragmentHome);
+                        } else {
+                            fragmentTransaction.show(fragmentHome);
+                        }
                         break;
 
                     case R.id.drawer_menu_account:
+                        if (fragmentMyAccount == null) {
+                            fragmentMyAccount = new MyAccountFragment();
+                            fragmentTransaction.add(R.id.fragment_container_view, fragmentMyAccount);
+                        } else {
+                            fragmentTransaction.show(fragmentMyAccount);
+                        }
                         break;
 
                     case R.id.drawer_menu_question:
+                        if (fragmentMyQuestion == null) {
+                            fragmentMyQuestion = new MyQuestionFragment();
+                            fragmentTransaction.add(R.id.fragment_container_view, fragmentMyQuestion);
+                        } else {
+                            fragmentTransaction.show(fragmentMyQuestion);
+                        }
                         break;
 
                     case R.id.drawer_menu_chat:
+                        if (fragmentChat == null) {
+                            fragmentChat = new ChatFragment();
+                            fragmentTransaction.add(R.id.fragment_container_view, fragmentChat);
+                        } else {
+                            fragmentTransaction.show(fragmentChat);
+                        }
                         break;
 
                     case R.id.drawer_menu_favor:
+                        if (fragmentMyFavor == null) {
+                            fragmentMyFavor = new SettingFragment();
+                            fragmentTransaction.add(R.id.fragment_container_view, fragmentMyFavor);
+                        } else {
+                            fragmentTransaction.show(fragmentMyFavor);
+                        }
                         break;
                 }
-
+                drawerLayout.closeDrawer(GravityCompat.START);
+                fragmentTransaction.commitAllowingStateLoss();
                 return false;
             }
         });
