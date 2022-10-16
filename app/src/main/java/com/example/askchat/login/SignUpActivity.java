@@ -125,9 +125,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                             if (task.isSuccessful()) {
                                                 //Store in database successfully
                                                 Toast.makeText(SignUpActivity.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
-
                                                 //redirect to login activity
-                                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                                                 finish();
                                             } else {
                                                 //Failed to store in database
