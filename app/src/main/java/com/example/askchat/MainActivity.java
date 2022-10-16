@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseDatabase firebaseDatabase;
 
     //User information
+    User userProfile;
     protected String userName;
     protected String userEmail;
 
@@ -74,26 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = firebaseDatabase.getReference("Users");
         userID = firebaseUser.getUid();
-
-        databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
-
-                if (userProfile != null) {
-                    userName = userProfile.getUserName();
-                    userEmail = userProfile.getEmail();
-                    Log.d("GET USER INFORMATION", "successfully");
-                    Log.d("GET USER INFORMATION, user name", userName);
-                    Log.d("GET USER INFORMATION, user email", userEmail);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MainActivity.this, "Unable to get user information", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void bindView() {
@@ -185,9 +166,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageView imageViewIcon = headerView.findViewById(R.id.drawer_header_icon);
         TextView textViewUserName = headerView.findViewById(R.id.drawer_header_user_name);
         TextView textViewUserEmail = headerView.findViewById(R.id.drawer_header_user_email);
-        textViewUserEmail.setText("" + userEmail);
-        textViewUserName.setText("" + userName);
 
+        databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userProfile = snapshot.getValue(User.class);
+
+                if (userProfile != null) {
+                    userName = userProfile.getUserName();
+                    userEmail = userProfile.getEmail();
+                    textViewUserName.setText(userName);
+                    textViewUserEmail.setText(userEmail);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Unable to get user information", Toast.LENGTH_LONG).show();
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
