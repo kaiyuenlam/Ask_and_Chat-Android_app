@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.askchat.R;
-import com.example.askchat.User;
+import com.example.askchat.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -113,11 +113,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                         if (task.isSuccessful()) {
                             //register successfully
-                            User user = new User(userName, email);
+                            UserModel user = new UserModel(userName, email, FirebaseAuth.getInstance().getCurrentUser().getUid());
                             Log.d(TAG, "Sign up successfully");
                             //Send user object to real time database
                             FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child(user.getuid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

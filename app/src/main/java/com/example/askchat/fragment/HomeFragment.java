@@ -13,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.askchat.MainActivity;
 import com.example.askchat.R;
-import com.example.askchat.User;
+import com.example.askchat.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -82,7 +80,7 @@ public class HomeFragment extends Fragment {
         databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
+                UserModel userProfile = snapshot.getValue(UserModel.class);
 
                 if (userProfile != null) {
                     String userName = userProfile.getUserName();
