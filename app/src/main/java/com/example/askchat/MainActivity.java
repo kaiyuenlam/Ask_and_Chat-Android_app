@@ -275,4 +275,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
+    public void toMyAccountFragment() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        hideAllFragment(fragmentTransaction);
+        if (fragmentMyAccount == null) {
+            fragmentMyAccount = new MyAccountFragment();
+            fragmentTransaction.add(R.id.fragment_container_view, fragmentMyAccount);
+        } else {
+            fragmentTransaction.show(fragmentMyAccount);
+        }
+        fragmentTransaction.commitAllowingStateLoss();
+    }
 }
