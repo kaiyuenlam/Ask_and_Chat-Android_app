@@ -38,7 +38,7 @@ public class SettingFragment extends Fragment {
         cardViewUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity().toMyAccountFragment();
+                //MainActivity().toMyAccountFragment();
             }
         });
     }
