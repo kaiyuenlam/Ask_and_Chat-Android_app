@@ -4,7 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.MyAccountFragment">
+    tools:context=".fragment.MyAccountActivity">
+
+    <ImageView
+        android:id="@+id/fragment_my_account_backBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_left_logocolor_24"
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/fragment_my_account_saveBTN"
@@ -17,7 +24,7 @@
         android:layout_marginBottom="20dp"
         android:text="Save"
         android:textColor="@color/logoColor"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
 

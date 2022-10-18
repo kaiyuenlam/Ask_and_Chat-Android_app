@@ -10,7 +10,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +22,7 @@ import android.widget.Toast;
 
 import com.example.askchat.fragment.ChatFragment;
 import com.example.askchat.fragment.HomeFragment;
-import com.example.askchat.fragment.MyAccountFragment;
+import com.example.askchat.fragment.MyAccountActivity;
 import com.example.askchat.fragment.MyFavorFragment;
 import com.example.askchat.fragment.MyQuestionFragment;
 import com.example.askchat.fragment.SettingFragment;
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Fragment
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
-    private Fragment fragmentHome, fragmentMyAccount, fragmentMyQuestion, fragmentSetting, fragmentMyFavor, fragmentChat;
+    private Fragment fragmentHome, fragmentMyQuestion, fragmentSetting, fragmentMyFavor, fragmentChat;
 
     //Navigation Drawer
     DrawerLayout drawerLayout;
@@ -157,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void hideAllFragment(FragmentTransaction fragmentTransaction) {
         if (fragmentHome != null) fragmentTransaction.hide(fragmentHome);
         if (fragmentChat != null) fragmentTransaction.hide(fragmentChat);
-        if (fragmentMyAccount != null) fragmentTransaction.hide(fragmentMyAccount);
         if (fragmentMyQuestion != null) fragmentTransaction.hide(fragmentMyQuestion);
         if (fragmentMyFavor != null) fragmentTransaction.hide(fragmentMyFavor);
         if (fragmentSetting != null) fragmentTransaction.hide(fragmentSetting);
@@ -201,6 +203,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String userEmail = userProfile.getEmail();
                     textViewUserName.setText(userName);
                     textViewUserEmail.setText(userEmail);
+
+                    //decode image
+                    if (userProfile.getEncodedUserIcon() != "") {
+                        byte[] bytes = Base64.decode(userProfile.getEncodedUserIcon(), Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageViewIcon.setImageBitmap(bitmap);
+
+                    }
                 }
             }
 
@@ -228,12 +238,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
 
                     case R.id.drawer_menu_account:
-                        if (fragmentMyAccount == null) {
-                            fragmentMyAccount = new MyAccountFragment();
-                            fragmentTransaction.add(R.id.fragment_container_view, fragmentMyAccount);
-                        } else {
-                            fragmentTransaction.show(fragmentMyAccount);
-                        }
+                        startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
+                        finish();
                         break;
 
                     case R.id.drawer_menu_question:
@@ -274,17 +280,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-
-    public void toMyAccountFragment() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        hideAllFragment(fragmentTransaction);
-        if (fragmentMyAccount == null) {
-            fragmentMyAccount = new MyAccountFragment();
-            fragmentTransaction.add(R.id.fragment_container_view, fragmentMyAccount);
-        } else {
-            fragmentTransaction.show(fragmentMyAccount);
-        }
-        fragmentTransaction.commitAllowingStateLoss();
     }
 }

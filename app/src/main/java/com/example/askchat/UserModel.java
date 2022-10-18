@@ -2,7 +2,7 @@ package com.example.askchat;
 
 public class UserModel {
 
-    public String userName, email, education, college, uid;
+    public String userName, email, education, college, uid, encodedUserIcon;
 
     public UserModel() {
 
@@ -14,10 +14,28 @@ public class UserModel {
         this.uid = uid;
         this.education = "";
         this.college = "";
+        this.encodedUserIcon = "";
+    }
+
+    public UserModel(String userName, String email, String uid, String education, String college, String encodedUserIcon) {
+        this.userName = userName;
+        this.email = email;
+        this.uid = uid;
+        this.education = education;
+        this.college = college;
+        this.encodedUserIcon = encodedUserIcon;
     }
 
     public String getUserName() {
         return userName;
+    }
+
+    public String getEncodedUserIcon() {
+        return encodedUserIcon;
+    }
+
+    public void setEncodedUserIcon(String encodedUserIcon) {
+        this.encodedUserIcon = encodedUserIcon;
     }
 
     public void setUserName(String userName) {
