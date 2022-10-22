@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="10dp"
+    android:id="@+id/postList_clickable_post"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/postList_cv_ui"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp">
+
+            <ImageView
+                android:id="@+id/postList_user_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/postList_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textSize="15dp"
+            android:layout_alignTop="@id/postList_cv_ui"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="70dp"
+            android:textColor="@color/fiveF"/>
+
+        <ImageView
+            android:id="@+id/postList_upvote_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_drop_upvote_24"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/postList_downvote_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_dropvote_down_24"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/postList_vote_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textColor="@color/black"
+            android:layout_alignTop="@id/postList_upvote_image"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:id="@+id/postList_questions_text"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="it is a sample of question. Note that we assume the HTC system is properly setup. (i.e. the room-scale play area or the standing-only play area is properly setup.) If it is not, you cannot play the game and you need to properly set it up before playing the game. You can search for the setup method in the browser with the keywords “htc vive room setup”. There are many videos or instructions telling you the way in setting up the HTC vive system. I am not going to explicitly describe it here."
+            android:layout_below="@id/postList_cv_ui"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_marginBottom="15dp"/>
+
+        <ImageView
+            android:id="@+id/postList_question_image"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_below="@id/postList_questions_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

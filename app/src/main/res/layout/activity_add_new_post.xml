@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.homefunc.AddNewPostActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/background_color_logo_to_white"/>
+
+    <ImageView
+        android:id="@+id/addNewPost_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/addNewPost_upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/addNewPost_back_button"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="15dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/addNewPost_cv_ui2"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/addNewPost_back_button"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/addNewPost_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ask a question"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/addNewPost_switch_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:checked="false"
+                android:text="Ask anonymously"
+                android:textColor="@color/black"
+                android:theme="@style/SCBSwitch"
+                app:switchMinWidth="50dp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addNewPost_cv_ui1"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addNewPost_title"
+                android:layout_centerHorizontal="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                        <EditText
+                            android:id="@+id/addNewPost_questions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:textSize="20sp"
+                            android:background="@null"
+                            android:hint="Type your question or attach a picture here."/>
+
+                        <ImageView
+                            android:id="@+id/addNewPost_image"
+                            android:layout_below="@id/addNewPost_questions"
+                            android:layout_width="300dp"
+                            android:layout_height="300dp"
+                            android:layout_centerHorizontal="true"
+                            android:visibility="gone"/>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/addNewPost_viewImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_image_text"
+                android:layout_below="@id/addNewPost_cv_ui1"
+                android:layout_alignLeft="@id/addNewPost_cv_ui1"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/blue"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/addNewPost_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_image_25"
+                android:layout_below="@id/addNewPost_viewImage"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
