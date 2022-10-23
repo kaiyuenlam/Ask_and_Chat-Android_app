@@ -3,13 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MyQuestionFragment">
+    tools:context=".fragment.MyQuestionFragment"
+    android:background="@drawable/background_color_logo_to_white">
 
     <TextView
+        android:id="@+id/fragment_my_question_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My question Fragment"
+        android:text="My Question"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/varelaround_regular"
+        android:textColor="@color/white"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_marginTop="15dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_my_question_recyclerView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@id/fragment_my_question_title"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
