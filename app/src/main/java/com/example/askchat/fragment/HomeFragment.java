@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.askchat.R;
 import com.example.askchat.UserModel;
 import com.example.askchat.fragment.homefunc.AddNewPostActivity;
+import com.example.askchat.fragment.homefunc.PostActivity;
 import com.example.askchat.fragment.homefunc.PostAdapter;
 import com.example.askchat.fragment.homefunc.PostModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements PostAdapter.OnPostClickListener{
 
     View view;
     ImageView imageViewSearchQuestionButton, imageViewAddPostButton;
@@ -89,7 +90,7 @@ public class HomeFragment extends Fragment {
 
         //set up recycler view
         listPost = new ArrayList<>();
-        postAdapter = new PostAdapter(listPost);
+        postAdapter = new PostAdapter(listPost, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setAdapter(postAdapter);
         readPost();
@@ -139,5 +140,12 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void OnPostClick(int position) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), PostActivity.class);
+        intent.putExtra("postID", listPost.get(position).getPostID());
+        startActivity(intent);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.askchat.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.askchat.R;
+import com.example.askchat.fragment.homefunc.PostActivity;
 import com.example.askchat.fragment.homefunc.PostAdapter;
 import com.example.askchat.fragment.homefunc.PostModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyQuestionFragment extends Fragment {
+public class MyQuestionFragment extends Fragment implements PostAdapter.OnPostClickListener{
     RecyclerView recyclerView;
     PostAdapter postAdapter;
     List<PostModel> listPost;
@@ -51,7 +53,7 @@ public class MyQuestionFragment extends Fragment {
     private void init_view(View view) {
         recyclerView = view.findViewById(R.id.fragment_my_question_recyclerView);
         listPost = new ArrayList<>();
-        postAdapter = new PostAdapter(listPost);
+        postAdapter = new PostAdapter(listPost, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setAdapter(postAdapter);
         readPost();
@@ -78,6 +80,13 @@ public class MyQuestionFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void OnPostClick(int position) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), PostActivity.class);
+        intent.putExtra("postID", listPost.get(position).getPostID());
+        startActivity(intent);
     }
 
 }

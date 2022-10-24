@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,13 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public List<PostModel> listPosts;
+    OnPostClickListener onPostClickListener;
 
     private FirebaseUser firebaseUser;
 
-    public PostAdapter(List<PostModel> listPosts) {
+    public PostAdapter(List<PostModel> listPosts, OnPostClickListener onPostClickListener) {
         this.listPosts = listPosts;
+        this.onPostClickListener = onPostClickListener;
     }
 
     @NonNull
@@ -41,7 +44,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.postlist_items, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, onPostClickListener);
     }
 
     @Override
@@ -80,6 +83,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 });
 
         setVoteText(holder, postModel);
+        holder.cardViewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -100,15 +109,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             viewHolder.imageViewDownVote.setVisibility(View.INVISIBLE);
             viewHolder.imageViewUpvote.setVisibility(View.VISIBLE);
         }
-        viewHolder.textViewVoteCounter.setText(bigDecimal.abs().toString());
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CardView cardViewPost;
         ImageView imageViewIcon, imageViewQuestion, imageViewUpvote, imageViewDownVote;
         TextView textViewUserName, textViewQuestion, textViewVoteCounter;
+        OnPostClickListener onPostClickListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnPostClickListener onPostClickListener) {
             super(itemView);
             cardViewPost = itemView.findViewById(R.id.postList_clickable_post);
             imageViewIcon = itemView.findViewById(R.id.postList_user_icon);
@@ -118,6 +127,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             textViewUserName = itemView.findViewById(R.id.postList_user_name);
             textViewQuestion = itemView.findViewById(R.id.postList_questions_text);
             textViewVoteCounter = itemView.findViewById(R.id.postList_vote_count);
+            this.onPostClickListener = onPostClickListener;
+
+            textViewQuestion.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onPostClickListener.OnPostClick(getAdapterPosition());
+            Log.e("post adapter", "on click listener");
         }
     }
+
+    public interface OnPostClickListener {
+        void OnPostClick(int position);
+    }
+
 }
