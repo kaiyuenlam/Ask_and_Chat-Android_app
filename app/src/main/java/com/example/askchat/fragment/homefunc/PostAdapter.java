@@ -1,6 +1,5 @@
 package com.example.askchat.fragment.homefunc;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -120,12 +119,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView, OnPostClickListener onPostClickListener) {
             super(itemView);
             cardViewPost = itemView.findViewById(R.id.postList_clickable_post);
-            imageViewIcon = itemView.findViewById(R.id.postList_user_icon);
-            imageViewQuestion = itemView.findViewById(R.id.postList_question_image);
-            imageViewUpvote = itemView.findViewById(R.id.postList_upvote_image);
+            imageViewIcon = itemView.findViewById(R.id.comment_user_icon);
+            imageViewQuestion = itemView.findViewById(R.id.comment_question_image);
+            imageViewUpvote = itemView.findViewById(R.id.comment_upvote_image);
             imageViewDownVote = itemView.findViewById(R.id.postList_downvote_image);
-            textViewUserName = itemView.findViewById(R.id.postList_user_name);
-            textViewQuestion = itemView.findViewById(R.id.postList_questions_text);
+            textViewUserName = itemView.findViewById(R.id.comment_user_name);
+            textViewQuestion = itemView.findViewById(R.id.input_comment_text);
             textViewVoteCounter = itemView.findViewById(R.id.postList_vote_count);
             this.onPostClickListener = onPostClickListener;
 
