@@ -82,12 +82,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 });
 
         setVoteText(holder, postModel);
-        holder.cardViewPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
     }
 
@@ -108,6 +102,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             viewHolder.imageViewDownVote.setVisibility(View.INVISIBLE);
             viewHolder.imageViewUpvote.setVisibility(View.VISIBLE);
         }
+        viewHolder.textViewVoteCounter.setText(bigDecimal.abs().toString());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
