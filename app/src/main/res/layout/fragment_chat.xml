@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@color/logoColor"
     tools:context=".fragment.ChatFragment">
 
     <LinearLayout
@@ -57,7 +57,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/logoColor"
+        android:background="@color/white"
         android:layout_marginTop="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true">
@@ -74,5 +74,18 @@
             android:layout_gravity="center"/>
 
     </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/chat_fragment_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_person_add_24"
+        android:backgroundTint="@color/white"
+        android:tint="@color/white"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"/>
+
 
 </RelativeLayout>
