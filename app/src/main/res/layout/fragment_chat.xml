@@ -3,13 +3,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     tools:context=".fragment.ChatFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/chat_fragment_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/chat_fragment_fl_contacts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/chat_fragment_background_container"
+            android:backgroundTint="@color/logoColor"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/chat_fragment_contacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contacts"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:gravity="center" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/chat_fragment_fl_chats"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/chat_fragment_background_container"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/chat_fragment_chats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/deepOrange"
+                android:text="Chats"
+                android:textSize="25sp"
+                android:gravity="center" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chat Fragment"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:background="@color/logoColor"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_fragment_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/chat_fragment_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
 
 </RelativeLayout>
