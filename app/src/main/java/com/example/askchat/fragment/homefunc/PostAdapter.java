@@ -31,8 +31,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public List<PostModel> listPosts;
     OnPostClickListener onPostClickListener;
 
-    private FirebaseUser firebaseUser;
-
     public PostAdapter(List<PostModel> listPosts, OnPostClickListener onPostClickListener) {
         this.listPosts = listPosts;
         this.onPostClickListener = onPostClickListener;
@@ -49,7 +47,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         PostModel postModel = listPosts.get(position);
 
         if (postModel.getImage().isEmpty()) {
@@ -82,12 +79,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 });
 
         setVoteText(holder, postModel);
-        holder.cardViewPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
     }
 
@@ -108,6 +99,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             viewHolder.imageViewDownVote.setVisibility(View.INVISIBLE);
             viewHolder.imageViewUpvote.setVisibility(View.VISIBLE);
         }
+        viewHolder.textViewVoteCounter.setText(bigDecimal.abs().toString());
+    }
+
+    public interface OnPostClickListener {
+        void OnPostClick(int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -136,10 +132,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             onPostClickListener.OnPostClick(getAdapterPosition());
             Log.e("post adapter", "on click listener");
         }
-    }
-
-    public interface OnPostClickListener {
-        void OnPostClick(int position);
     }
 
 }

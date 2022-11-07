@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/contact_list_ui1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        app:cardCornerRadius="60dp">
+        <ImageView
+            android:id="@+id/contact_list_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/contact_list_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/contact_list_ui1"
+        android:text="User Name"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/ibmplexsans_regular"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/contact_list_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/contact_list_ui1"
+        android:layout_below="@id/contact_list_user_name"
+        android:text="User Email"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/ibmplexsans_regular"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="8dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/contact_list_accept_friend_button"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/logoColor">
+
+        <TextView
+            android:id="@+id/contact_list_accept_friend_button_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:textColor="@color/white"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/contact_list_accept_friend_button_accepted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accepted"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

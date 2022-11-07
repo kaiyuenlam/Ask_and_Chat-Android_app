@@ -17,6 +17,7 @@ import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,9 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ImageView imageViewFavor, imageViewChat, imageViewSetting;
     CardView cardView_logoutButton;
+    ProgressBar progressBar;
+    //hello
+    //hi
 
     //Fragment
     private FragmentTransaction fragmentTransaction;
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageViewChat = findViewById(R.id.chatBTN);
         imageViewSetting = findViewById(R.id.settingBTN);
         cardView_logoutButton = findViewById(R.id.mainActivity_logoutBTN);
+        progressBar = findViewById(R.id.mainActivity_progress_bar);
     }
 
     private void setOnClickListener() {
@@ -170,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentHome = new HomeFragment();
         fragmentTransaction.add(R.id.fragment_container_view, fragmentHome);
         fragmentTransaction.commitAllowingStateLoss();
+        progressBar.setVisibility(View.GONE);
     }
 
     protected void setNavigationDrawer() {
