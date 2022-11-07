@@ -135,10 +135,8 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostClickLis
                 }
                 postAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
