@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView imageViewFavor, imageViewChat, imageViewSetting;
     CardView cardView_logoutButton;
     ProgressBar progressBar;
+    //hello
 
     //Fragment
     private FragmentTransaction fragmentTransaction;
