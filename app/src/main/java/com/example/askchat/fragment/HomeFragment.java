@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostClickLis
                 listPost.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     PostModel postModel = dataSnapshot.getValue(PostModel.class);
-                    listPost.add(postModel);
+                    listPost.add(0, postModel);
                 }
                 postAdapter.notifyDataSetChanged();
             }

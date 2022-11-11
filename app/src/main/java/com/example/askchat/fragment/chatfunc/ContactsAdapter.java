@@ -1,5 +1,8 @@
 package com.example.askchat.fragment.chatfunc;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.askchat.R;
+import com.example.askchat.UserModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -18,14 +26,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     List<String> list;
     AcceptedAdapter adapter;
+    RemoveItem removeItem;
 
-    public ContactsAdapter(List<String> list) {
+    public ContactsAdapter(List<String> list, RemoveItem removeItem) {
         this.list = list;
+        this.removeItem = removeItem;
     }
 
-    public ContactsAdapter(List<String> list, AcceptedAdapter adapter) {
+    public ContactsAdapter(List<String> list, AcceptedAdapter adapter, RemoveItem removeItem) {
         this.list = list;
         this.adapter = adapter;
+        this.removeItem = removeItem;
     }
 
     @NonNull
@@ -43,7 +54,24 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        FirebaseDatabase.getInstance().getReference("Users").child(list.get(position))
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserModel userModel = snapshot.getValue(UserModel.class);
 
+                        byte[] bytes = Base64.decode(userModel.getEncodedUserIcon(), Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        holder.imageViewUserIcon.setImageBitmap(bitmap);
+                        holder.textViewUserName.setText(userModel.getUserName());
+                        holder.textViewUserEmail.setText(userModel.getEmail());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     @Override
@@ -51,8 +79,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         return list.size();
     }
 
+    public void deleteItem(int position) {
+        removeItem.remove(adapter == null, position);
+    }
+
     public interface AcceptedAdapter{
-        void accepted(boolean isFriends, String userId);
+        void accepted(boolean isFriends, int position);
+    }
+
+    public interface RemoveItem{
+        void remove(boolean isContact, int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -94,12 +130,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             if (textViewAccept.getVisibility() == View.VISIBLE) {
                 textViewAccept.setVisibility(View.INVISIBLE);
                 textViewAccepted.setVisibility(View.VISIBLE);
-                acceptedAdapter.accepted(true, textViewUserEmail.getText().toString());
+                acceptedAdapter.accepted(true, getAdapterPosition());
 
             } else if (textViewAccepted.getVisibility() == View.VISIBLE){
                 textViewAccept.setVisibility(View.VISIBLE);
                 textViewAccepted.setVisibility(View.INVISIBLE);
-                acceptedAdapter.accepted(false, textViewUserEmail.getText().toString());
+                acceptedAdapter.accepted(false, getAdapterPosition());
             }
         }
     }

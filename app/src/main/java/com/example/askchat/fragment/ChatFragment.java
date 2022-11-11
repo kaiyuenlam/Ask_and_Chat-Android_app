@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.example.askchat.R;
 import com.example.askchat.UserModel;
 import com.example.askchat.fragment.chatfunc.ContactsAdapter;
+import com.example.askchat.fragment.chatfunc.RecyclerItemTouchHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +37,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatFragment extends Fragment implements View.OnClickListener, ContactsAdapter.AcceptedAdapter {
+public class ChatFragment extends Fragment implements View.OnClickListener
+        , ContactsAdapter.AcceptedAdapter, ContactsAdapter.RemoveItem, RecyclerItemTouchHelper.RemoveItemConfirm {
     TextView textViewContacts, textViewChats, textViewFriendsRequest, textViewFriends;
     ProgressBar progressBar;
     RecyclerView recyclerViewContacts, recyclerViewFriendRequest;
@@ -86,14 +89,20 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Cont
         listChatRoom = new ArrayList<>();
         listContacts = new ArrayList<>();
 
-        friendsRequestAdapter = new ContactsAdapter(listFriendsRequest, this);
-        contactsAdapter = new ContactsAdapter(listContacts);
+        friendsRequestAdapter = new ContactsAdapter(listFriendsRequest, this, this);
+        contactsAdapter = new ContactsAdapter(listContacts, this);
         recyclerViewFriendRequest.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerViewFriendRequest.setAdapter(friendsRequestAdapter);
         recyclerViewContacts.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerViewContacts.setAdapter(contactsAdapter);
         readFriends();
 
+        ItemTouchHelper contactsTouchHelper = new ItemTouchHelper(
+                new RecyclerItemTouchHelper(contactsAdapter, getActivity().getApplicationContext(), this));
+        contactsTouchHelper.attachToRecyclerView(recyclerViewContacts);
+        ItemTouchHelper friendRequestTouchHelper = new ItemTouchHelper(
+                new RecyclerItemTouchHelper(friendsRequestAdapter, getActivity().getApplicationContext(), this));
+        friendRequestTouchHelper.attachToRecyclerView(recyclerViewFriendRequest);
     }
 
     @Override
@@ -208,8 +217,63 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Cont
     }
 
     @Override
-    public void accepted(boolean isFriends, String userId) {
-        //accept friend
+    public void accepted(boolean isFriends, int position) {
+        String friendID = listFriendsRequest.get(position);
+        if (isFriends) {
+            //accept friend request
+            FirebaseDatabase.getInstance().getReference("Friends")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(friendID).setValue(3);
+            FirebaseDatabase.getInstance().getReference("Friends")
+                    .child(friendID)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(3);
+        } else {
+            FirebaseDatabase.getInstance().getReference("Friends")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(friendID).setValue(2);
+            FirebaseDatabase.getInstance().getReference("Friends")
+                    .child(friendID)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(1);
+            listFriendsRequest.clear();
+        }
+    }
 
+    @Override
+    public void remove(boolean isContact, int position) {
+        String friendUID;
+        if (isContact) {
+            friendUID = listContacts.get(position);
+        } else {
+            friendUID = listFriendsRequest.get(position);
+        }
+
+        FirebaseDatabase.getInstance().getReference("Friends")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(friendUID).removeValue();
+        FirebaseDatabase.getInstance().getReference("Friends")
+                .child(friendUID)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+        listFriendsRequest.clear();
+    }
+
+    @Override
+    public void callDialog(ContactsAdapter adapter, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle("Delete card");
+        builder.setMessage("Are you sure you want to delete ?");
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                adapter.deleteItem(position);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                adapter.notifyItemChanged(position);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
