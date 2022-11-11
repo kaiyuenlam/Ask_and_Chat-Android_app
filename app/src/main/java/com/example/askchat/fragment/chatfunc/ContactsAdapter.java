@@ -94,9 +94,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             if (textViewAccept.getVisibility() == View.VISIBLE) {
                 textViewAccept.setVisibility(View.INVISIBLE);
                 textViewAccepted.setVisibility(View.VISIBLE);
+                acceptedAdapter.accepted(true, textViewUserEmail.getText().toString());
+
             } else if (textViewAccepted.getVisibility() == View.VISIBLE){
                 textViewAccept.setVisibility(View.VISIBLE);
                 textViewAccepted.setVisibility(View.INVISIBLE);
+                acceptedAdapter.accepted(false, textViewUserEmail.getText().toString());
             }
         }
     }
