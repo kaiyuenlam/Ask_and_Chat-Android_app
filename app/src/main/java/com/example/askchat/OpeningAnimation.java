@@ -24,6 +24,6 @@ public class OpeningAnimation extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(OpeningAnimation.this, LoginActivity.class));
             }
-        },3500);
+        },2000);
     }
 }
