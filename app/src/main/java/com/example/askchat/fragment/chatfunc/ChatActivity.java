@@ -49,7 +49,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         bindView();
         list = new ArrayList<>();
         messageAdapter = new MessageAdapter(list);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(messageAdapter);
         readMessage();
     }
@@ -131,6 +130,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             list.add(messageModel);
                         }
                         messageAdapter.notifyDataSetChanged();
+                        recyclerView.scrollToPosition(list.size() - 1);
                     }
 
                     @Override

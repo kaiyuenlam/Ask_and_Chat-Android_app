@@ -26,7 +26,10 @@ import android.widget.Toast;
 import com.example.askchat.R;
 import com.example.askchat.UserModel;
 import com.example.askchat.fragment.chatfunc.ChatActivity;
+import com.example.askchat.fragment.chatfunc.ChatListAdapter;
+import com.example.askchat.fragment.chatfunc.ChatRoomModel;
 import com.example.askchat.fragment.chatfunc.ContactsAdapter;
+import com.example.askchat.fragment.chatfunc.MessageModel;
 import com.example.askchat.fragment.chatfunc.RecyclerItemTouchHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,12 +39,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatFragment extends Fragment implements View.OnClickListener
         , ContactsAdapter.AcceptedAdapter, ContactsAdapter.RemoveItem, RecyclerItemTouchHelper.RemoveItemConfirm
-        , ContactsAdapter.ToChatListener{
+        , ContactsAdapter.ToChatListener, ChatListAdapter.OnChatListClickListener {
 
     TextView textViewContacts, textViewChats, textViewFriendsRequest, textViewFriends;
     ProgressBar progressBar;
@@ -49,9 +54,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener
     FrameLayout frameLayoutContacts, frameLayoutChats, frameLayoutContactLayout, frameLayoutChatsLayout;
     FloatingActionButton fab_addFriendButton;
 
-    List<String> listFriendsRequest, listContacts, listChatRoom;
+    List<String> listFriendsRequest, listContacts;
+    List<ChatRoomModel> listChatRoom;
 
     ContactsAdapter friendsRequestAdapter, contactsAdapter;
+    ChatListAdapter chatListAdapter;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -108,6 +115,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener
         ItemTouchHelper friendRequestTouchHelper = new ItemTouchHelper(
                 new RecyclerItemTouchHelper(friendsRequestAdapter, getActivity().getApplicationContext(), this));
         friendRequestTouchHelper.attachToRecyclerView(recyclerViewFriendRequest);
+
+        //chat recycler view setup
+        chatListAdapter = new ChatListAdapter(this, listChatRoom);
+        recyclerViewChats.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        recyclerViewChats.setAdapter(chatListAdapter);
+        readChatRoom();
     }
 
     @Override
@@ -290,9 +303,84 @@ public class ChatFragment extends Fragment implements View.OnClickListener
         dialog.show();
     }
 
+    private void readChatRoom() {
+        FirebaseDatabase.getInstance().getReference("Message")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listChatRoom.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            ChatRoomModel chatRoomModel = new ChatRoomModel();
+                            chatRoomModel.setUserID(dataSnapshot.getKey());
+                            int lastOrder = (int) dataSnapshot.getChildrenCount();
+                            int counter = 1;
+                            for (DataSnapshot message : dataSnapshot.getChildren()) {
+                                if (counter == lastOrder) {
+                                    MessageModel messageModel = message.getValue(MessageModel.class);
+                                    chatRoomModel.setTime(messageModel.getDate());
+                                    chatRoomModel.setMessage(messageModel.getMessage());
+                                }
+                                counter++;
+                            }
+                            listChatRoom.add(chatRoomModel);
+                            //listChatRoom = sortChatRoom(listChatRoom);
+                            chatListAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private List<ChatRoomModel> sortChatRoom(List<ChatRoomModel> list) {
+        List<ChatRoomModel> result = new ArrayList<>();
+        if (list.size() > 1) {
+            List<LocalDateTime> timeArray = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                //read all time
+                timeArray.add(LocalDateTime.parse(list.get(i).getTime(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            }
+            //sorting time
+            LocalDateTime temp;
+            for (int i = 0; i < timeArray.size(); i++) {
+                for (int j = 1; j < timeArray.size(); j++){
+                    if (timeArray.get(i).isBefore(timeArray.get(j))) {
+                        temp = timeArray.get(i);
+                        timeArray.set(i, timeArray.get(j));
+                        timeArray.set(j, temp);
+                    }
+                }
+            }
+            //rearrange list
+            for (int i = 0; i < timeArray.size(); i++) {
+                for (int j = 0; j < list.size(); j++) {
+                    if (timeArray.get(i).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+                            .equals(list.get(j).getTime())) {
+                        result.add(i, list.get(j));
+                    }
+                }
+            }
+        } else {
+            result = list;
+        }
+        return result;
+    }
+
     @Override
     public void toChatActivity(int position) {
         String userID = listContacts.get(position);
+        Intent intent = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
+        intent.putExtra("friendID", userID);
+        getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void ToChatActivity(int position) {
+        String userID = listChatRoom.get(position).getUserID();
         Intent intent = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
         intent.putExtra("friendID", userID);
         getActivity().startActivity(intent);

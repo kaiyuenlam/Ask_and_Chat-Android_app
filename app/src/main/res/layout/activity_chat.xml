@@ -95,7 +95,7 @@
 
                 <EditText
                     android:id="@+id/chat_activity_edit_text"
-                    android:layout_width="290dp"
+                    android:layout_width="270dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
