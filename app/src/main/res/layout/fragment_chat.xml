@@ -119,6 +119,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_fragment_chats_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </FrameLayout>
 

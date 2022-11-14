@@ -27,10 +27,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     List<String> list;
     AcceptedAdapter adapter;
     RemoveItem removeItem;
+    ToChatListener toChatListener;
 
-    public ContactsAdapter(List<String> list, RemoveItem removeItem) {
+    public ContactsAdapter(RemoveItem removeItem, List<String> list, ToChatListener toChatListener) {
         this.list = list;
         this.removeItem = removeItem;
+        this.toChatListener = toChatListener;
     }
 
     public ContactsAdapter(List<String> list, AcceptedAdapter adapter, RemoveItem removeItem) {
@@ -48,7 +50,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         if (adapter != null) {
             return new ViewHolder(itemView, adapter);
         } else {
-            return new ViewHolder(itemView);
+            return new ViewHolder(itemView, toChatListener);
         }
     }
 
@@ -91,14 +93,20 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         void remove(boolean isContact, int position);
     }
 
+    public interface ToChatListener{
+        void toChatActivity(int position);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imageViewUserIcon;
         TextView textViewUserName, textViewUserEmail, textViewAccept, textViewAccepted;
         CardView cardViewFriendButton;
         AcceptedAdapter acceptedAdapter;
+        ToChatListener toChatListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, ToChatListener toChatListener) {
             super(itemView);
+            this.toChatListener = toChatListener;
             bindView();
         }
 
@@ -123,6 +131,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             } else {
                 cardViewFriendButton.setOnClickListener(this);
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toChatListener.toChatActivity(getAdapterPosition());
+                }
+            });
         }
 
         @Override

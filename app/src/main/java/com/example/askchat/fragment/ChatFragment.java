@@ -2,6 +2,7 @@ package com.example.askchat.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.askchat.R;
 import com.example.askchat.UserModel;
+import com.example.askchat.fragment.chatfunc.ChatActivity;
 import com.example.askchat.fragment.chatfunc.ContactsAdapter;
 import com.example.askchat.fragment.chatfunc.RecyclerItemTouchHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,10 +40,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatFragment extends Fragment implements View.OnClickListener
-        , ContactsAdapter.AcceptedAdapter, ContactsAdapter.RemoveItem, RecyclerItemTouchHelper.RemoveItemConfirm {
+        , ContactsAdapter.AcceptedAdapter, ContactsAdapter.RemoveItem, RecyclerItemTouchHelper.RemoveItemConfirm
+        , ContactsAdapter.ToChatListener{
+
     TextView textViewContacts, textViewChats, textViewFriendsRequest, textViewFriends;
     ProgressBar progressBar;
-    RecyclerView recyclerViewContacts, recyclerViewFriendRequest;
+    RecyclerView recyclerViewContacts, recyclerViewFriendRequest, recyclerViewChats;
     FrameLayout frameLayoutContacts, frameLayoutChats, frameLayoutContactLayout, frameLayoutChatsLayout;
     FloatingActionButton fab_addFriendButton;
 
@@ -80,6 +84,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener
         textViewFriendsRequest = view.findViewById(R.id.chat_fragment_friend_request_textView);
         frameLayoutContactLayout = view.findViewById(R.id.chat_fragment_contacts_layout);
         frameLayoutChatsLayout = view.findViewById(R.id.chat_fragment_chats_layout);
+        recyclerViewChats = view.findViewById(R.id.chat_fragment_chats_recycler_view);
 
         textViewContacts.setOnClickListener(this);
         textViewChats.setOnClickListener(this);
@@ -90,7 +95,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener
         listContacts = new ArrayList<>();
 
         friendsRequestAdapter = new ContactsAdapter(listFriendsRequest, this, this);
-        contactsAdapter = new ContactsAdapter(listContacts, this);
+        contactsAdapter = new ContactsAdapter(this, listContacts, this);
         recyclerViewFriendRequest.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerViewFriendRequest.setAdapter(friendsRequestAdapter);
         recyclerViewContacts.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -214,6 +219,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
+
+        if (listFriendsRequest.size() == 0) {
+            textViewFriendsRequest.setVisibility(View.VISIBLE);
+            recyclerViewFriendRequest.setVisibility(View.VISIBLE);
+        } else {
+            textViewFriendsRequest.setVisibility(View.GONE);
+            recyclerViewFriendRequest.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -275,5 +288,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void toChatActivity(int position) {
+        String userID = listContacts.get(position);
+        Intent intent = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
+        intent.putExtra("friendID", userID);
+        getActivity().startActivity(intent);
     }
 }
