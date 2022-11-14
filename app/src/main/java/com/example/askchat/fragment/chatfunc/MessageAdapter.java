@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.askchat.R;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
@@ -36,13 +39,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.receiveTime.setVisibility(View.GONE);
             holder.textViewReceive.setVisibility(View.GONE);
             holder.frameLayoutReceive.setVisibility(View.GONE);
-            holder.sendTime.setText(time);
+            holder.sendTime.setText(getBetterTime(time));
             holder.textViewSend.setText(messageModel.getMessage());
         } else {
             holder.sendTime.setVisibility(View.GONE);
             holder.textViewSend.setVisibility(View.GONE);
             holder.frameLayoutSend.setVisibility(View.GONE);
-            holder.receiveTime.setText(time);
+            holder.receiveTime.setText(getBetterTime(time));
             holder.textViewReceive.setText(messageModel.getMessage());
         }
     }
@@ -50,6 +53,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    private String getBetterTime(String input) {
+        LocalDateTime localDateTime = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        if (localDateTime.toLocalDate().equals(LocalDate.now())) {
+            return localDateTime.toLocalTime().toString();
+        }
+        return localDateTime.toString();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
