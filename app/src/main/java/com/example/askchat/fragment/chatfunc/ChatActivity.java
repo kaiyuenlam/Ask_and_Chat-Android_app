@@ -3,6 +3,7 @@ package com.example.askchat.fragment.chatfunc;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
@@ -23,7 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -33,6 +37,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     EditText editTextInputMessage;
     RecyclerView recyclerView;
     String friendsID;
+    List<MessageModel> list;
+    MessageAdapter messageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +47,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().hide();  //action bar hidden
         friendsID = getIntent().getStringExtra("friendID");
         bindView();
+        list = new ArrayList<>();
+        messageAdapter = new MessageAdapter(list);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(messageAdapter);
+        readMessage();
     }
 
     private void bindView() {
         imageViewBackToChatButton = findViewById(R.id.chat_activity_back_image_view);
         cardViewSendButton = findViewById(R.id.chat_activity_send_card_view);
         editTextInputMessage = findViewById(R.id.chat_activity_edit_text);
-        recyclerView = findViewById(R.id.chat_fragment_recycler_view);
+        recyclerView = findViewById(R.id.chat_activity_recycler_view);
         imageViewUserIcon = findViewById(R.id.chat_activity_user_icon);
         textViewUserName = findViewById(R.id.chat_activity_user_name);
 
@@ -82,6 +93,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.chat_activity_send_card_view:
                 sendMessage();
+                editTextInputMessage.getText().clear();
                 break;
         }
     }
@@ -95,7 +107,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             MessageModel messageModel = new MessageModel();
             messageModel.setMessage(editTextInputMessage.getText().toString().trim());
             messageModel.setSender(true);
-            messageModel.setLocalDateTime(new Date());
+            messageModel.setLocalDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 
             FirebaseDatabase.getInstance().getReference("Message").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child(friendsID).child(messageID).setValue(messageModel);
@@ -105,5 +117,26 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child(messageID).setValue(messageModel);
         }
+    }
+
+    private void readMessage() {
+        FirebaseDatabase.getInstance().getReference("Message")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(friendsID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        list.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            MessageModel messageModel = dataSnapshot.getValue(MessageModel.class);
+                            list.add(messageModel);
+                        }
+                        messageAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

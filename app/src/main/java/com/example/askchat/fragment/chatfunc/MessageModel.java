@@ -5,14 +5,13 @@ import java.util.Date;
 
 public class MessageModel {
 
-    String message;
-    Date date;
+    String message, date;
     boolean isSender;
 
     public MessageModel() {
     }
 
-    public MessageModel(String message, Date date, boolean isSender) {
+    public MessageModel(String message, String date, boolean isSender) {
         this.message = message;
         this.date = date;
         this.isSender = isSender;
@@ -26,11 +25,11 @@ public class MessageModel {
         this.message = message;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setLocalDateTime(Date date) {
+    public void setLocalDateTime(String date) {
         this.date = date;
     }
 

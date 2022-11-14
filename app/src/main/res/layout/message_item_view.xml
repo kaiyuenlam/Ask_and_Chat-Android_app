@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <FrameLayout
+        android:id="@+id/message_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_send_message"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:id="@+id/message_send_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I go to school by bus"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/message_receive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_receive_message"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp">
+
+        <TextView
+            android:id="@+id/message_receive_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I go to school by bus"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/message_send_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="14 Nov 16:35"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/message_send"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/message_receive_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="14 Nov 16:35"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/message_receive"
+        android:layout_marginLeft="20dp"/>
+
+
+</RelativeLayout>
