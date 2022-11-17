@@ -78,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     }
                 });
 
-        setVoteText(holder, postModel);
+        //setVoteText(holder, postModel);
 
     }
 
@@ -125,6 +125,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             this.onPostClickListener = onPostClickListener;
 
             textViewQuestion.setOnClickListener(this);
+
+            imageViewUpvote.setVisibility(View.INVISIBLE);
+            imageViewDownVote.setVisibility(View.INVISIBLE);
+            textViewVoteCounter.setVisibility(View.INVISIBLE);
         }
 
         @Override

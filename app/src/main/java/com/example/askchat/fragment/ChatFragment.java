@@ -234,11 +234,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener
                 });
 
         if (listFriendsRequest.size() == 0) {
-            textViewFriendsRequest.setVisibility(View.VISIBLE);
-            recyclerViewFriendRequest.setVisibility(View.VISIBLE);
-        } else {
             textViewFriendsRequest.setVisibility(View.GONE);
             recyclerViewFriendRequest.setVisibility(View.GONE);
+        } else {
+            textViewFriendsRequest.setVisibility(View.VISIBLE);
+            recyclerViewFriendRequest.setVisibility(View.VISIBLE);
         }
     }
 

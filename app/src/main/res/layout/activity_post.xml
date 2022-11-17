@@ -1,92 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.homefunc.PostActivity">
 
-    <EditText
-        android:id="@+id/comment_text"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/add_a_comment"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textColorHint="#757575"
-        app:layout_constraintEnd_toStartOf="@+id/send_imgbtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
-
-    <ImageButton
-        android:id="@+id/send_imgbtn"
+    <FrameLayout
+        android:id="@+id/post_activity_frame_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:contentDescription="@string/sendcomment_imagebutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="44dp" />
+            <ImageView
+                android:id="@+id/post_activity_back_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_left_logocolor_24"
+                android:layout_marginTop="5dp"/>
 
-    <TextView
-        android:id="@+id/comment_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/comment_header_text"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+            <TextView
+                android:id="@+id/post_activity_question_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/post_activity_back_image_view"
+                android:layout_marginTop="20dp"
+                android:text="I am displaying text in a TextView that appears to be too long to fit into one screen. I need to make my TextView scrollable. How can I do that?"
+                android:maxLines="4"
+                android:scrollbars="vertical"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
 
-    <ImageButton
-        android:id="@+id/comment_backward_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:contentDescription="@string/comment_backward_imgbtn"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.405"
-        app:srcCompat="@drawable/arrow_left_logocolor_24"
-        tools:ignore="ImageContrastCheck" />
+            <ImageView
+                android:id="@+id/post_activity_image"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_below="@id/post_activity_question_text_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/post_activity_view_image_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Image"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/blue"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/post_activity_question_text_view"
+                android:layout_alignLeft="@id/post_activity_question_text_view"
+                android:layout_marginBottom="10dp"/>
+
+        </RelativeLayout>
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/comment_recyclerView"
-        android:layout_width="409dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.428" />
+        android:id="@+id/post_activity_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_activity_frame_layout"
+        android:layout_above="@id/post_activity_bottom_frame_layout"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
+    <TextView
+        android:id="@+id/post_activity_first_to_comment_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="89dp" />
+        android:text="Be the first to comment"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/post_activity_frame_layout"
+        android:layout_marginTop="100dp"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/post_activity_bottom_frame_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="636dp" />
+        android:background="@color/superDeepOrange"
+        android:layout_alignParentBottom="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="80dp">
+
+                <EditText
+                    android:id="@+id/post_activity_edit_text"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@null"
+                    android:hint="  Type a comment"
+                    android:maxLines="3"
+                    android:textSize="18sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/post_activity_send_card_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/deepOrange"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                app:cardCornerRadius="60dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_send_25"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"/>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </FrameLayout>
+
+
+</RelativeLayout>

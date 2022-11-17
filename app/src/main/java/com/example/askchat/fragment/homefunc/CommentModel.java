@@ -1,43 +1,38 @@
 package com.example.askchat.fragment.homefunc;
 
 public class CommentModel {
-    private String postID, image, publisher, question;
-    public CommentModel(String postID, String image, String publisher, String question) {
-        this.postID = postID;
-        this.image = image;
-        this.publisher = publisher;
-        this.question = question;
+    String userID, comment, time;
+
+    public CommentModel() {
     }
 
-    public String getPostID() {
-        return postID;
+    public CommentModel(String userID, String comment, String time) {
+        this.userID = userID;
+        this.comment = comment;
+        this.time = time;
     }
 
-    public void setPostID(String postID) {
-        this.postID = postID;
+    public String getUserID() {
+        return userID;
     }
 
-    public String getImage() {
-        return image;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getComment() {
+        return comment;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public String getTime() {
+        return time;
     }
 
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setTime(String time) {
+        this.time = time;
     }
 }
