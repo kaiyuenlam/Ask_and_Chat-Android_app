@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     case R.id.drawer_menu_favor:
                         if (fragmentMyFavor == null) {
-                            fragmentMyFavor = new SettingFragment();
+                            fragmentMyFavor = new MyFavorFragment();
                             fragmentTransaction.add(R.id.fragment_container_view, fragmentMyFavor);
                         } else {
                             fragmentTransaction.show(fragmentMyFavor);
