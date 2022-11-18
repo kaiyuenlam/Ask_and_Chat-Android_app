@@ -6,12 +6,12 @@ import java.util.Date;
 public class MessageModel {
 
     String message, date;
-    boolean isSender;
+    int isSender;
 
     public MessageModel() {
     }
 
-    public MessageModel(String message, String date, boolean isSender) {
+    public MessageModel(String message, String date, int isSender) {
         this.message = message;
         this.date = date;
         this.isSender = isSender;
@@ -33,11 +33,11 @@ public class MessageModel {
         this.date = date;
     }
 
-    public boolean isSender() {
+    public int isSender() {
         return isSender;
     }
 
-    public void setSender(boolean sender) {
+    public void setSender(int sender) {
         isSender = sender;
     }
 }

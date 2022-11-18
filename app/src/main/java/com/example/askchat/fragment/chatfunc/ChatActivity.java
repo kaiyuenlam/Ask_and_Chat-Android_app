@@ -3,7 +3,6 @@ package com.example.askchat.fragment.chatfunc;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.askchat.R;
 import com.example.askchat.UserModel;
+import com.example.askchat.fragment.FavorPostDatabaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener{
@@ -50,7 +49,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         list = new ArrayList<>();
         messageAdapter = new MessageAdapter(list);
         recyclerView.setAdapter(messageAdapter);
-        readMessage();
+        readLastMessage();
     }
 
     private void bindView() {
@@ -105,20 +104,20 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
             MessageModel messageModel = new MessageModel();
             messageModel.setMessage(editTextInputMessage.getText().toString().trim());
-            messageModel.setSender(true);
+            messageModel.setSender(1);
             messageModel.setLocalDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 
             FirebaseDatabase.getInstance().getReference("Message").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child(friendsID).child(messageID).setValue(messageModel);
 
-            messageModel.setSender(false);
+            messageModel.setSender(0);
             FirebaseDatabase.getInstance().getReference("Message").child(friendsID)
                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child(messageID).setValue(messageModel);
         }
     }
 
-    private void readMessage() {
+    private void readLastMessage() {
         FirebaseDatabase.getInstance().getReference("Message")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child(friendsID).addValueEventListener(new ValueEventListener() {

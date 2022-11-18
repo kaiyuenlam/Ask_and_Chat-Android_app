@@ -30,10 +30,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public List<PostModel> listPosts;
     OnPostClickListener onPostClickListener;
+    OnPostLongClickListener onPostLongClickListener;
+    List<String> favorList;
 
     public PostAdapter(List<PostModel> listPosts, OnPostClickListener onPostClickListener) {
         this.listPosts = listPosts;
         this.onPostClickListener = onPostClickListener;
+    }
+
+    public PostAdapter(List<PostModel> listPosts, OnPostClickListener onPostClickListener
+            , OnPostLongClickListener onPostLongClickListener, List<String> favorList) {
+        this.listPosts = listPosts;
+        this.onPostClickListener = onPostClickListener;
+        this.onPostLongClickListener = onPostLongClickListener;
+        this.favorList = favorList;
     }
 
     @NonNull
@@ -41,6 +51,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.postlist_items, parent, false);
+        if (onPostLongClickListener != null) {
+            return new ViewHolder(itemView, onPostClickListener, onPostLongClickListener);
+        }
         return new ViewHolder(itemView, onPostClickListener);
     }
 
@@ -78,8 +91,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     }
                 });
 
+        if (onPostLongClickListener != null) {
+            if (favorList.contains(postModel.getPostID())) {
+                holder.imageViewStar.setVisibility(View.VISIBLE);
+            }
+        }
         //setVoteText(holder, postModel);
-
     }
 
     @Override
@@ -106,14 +123,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         void OnPostClick(int position);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public interface OnPostLongClickListener {
+        void OnPostLongClick(int position);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         CardView cardViewPost;
-        ImageView imageViewIcon, imageViewQuestion, imageViewUpvote, imageViewDownVote;
+        ImageView imageViewIcon, imageViewQuestion, imageViewUpvote, imageViewDownVote, imageViewStar;
         TextView textViewUserName, textViewQuestion, textViewVoteCounter;
         OnPostClickListener onPostClickListener;
+        OnPostLongClickListener onPostLongClickListener;
 
         public ViewHolder(@NonNull View itemView, OnPostClickListener onPostClickListener) {
             super(itemView);
+            bindView(itemView);
+            this.onPostClickListener = onPostClickListener;
+            itemView.setOnClickListener(this);
+            imageViewUpvote.setVisibility(View.INVISIBLE);
+            imageViewDownVote.setVisibility(View.INVISIBLE);
+            textViewVoteCounter.setVisibility(View.INVISIBLE);
+        }
+
+        public ViewHolder(@NonNull View itemView, OnPostClickListener onPostClickListener, OnPostLongClickListener onPostLongClickListener) {
+            super(itemView);
+            bindView(itemView);
+            this.onPostClickListener = onPostClickListener;
+            this.onPostLongClickListener = onPostLongClickListener;
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+            imageViewUpvote.setVisibility(View.INVISIBLE);
+            imageViewDownVote.setVisibility(View.INVISIBLE);
+            textViewVoteCounter.setVisibility(View.INVISIBLE);
+        }
+
+        private void bindView(View itemView) {
             cardViewPost = itemView.findViewById(R.id.postList_clickable_post);
             imageViewIcon = itemView.findViewById(R.id.comment_user_icon);
             imageViewQuestion = itemView.findViewById(R.id.comment_question_image);
@@ -122,19 +165,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             textViewUserName = itemView.findViewById(R.id.comment_user_name);
             textViewQuestion = itemView.findViewById(R.id.input_comment_text);
             textViewVoteCounter = itemView.findViewById(R.id.postList_vote_count);
-            this.onPostClickListener = onPostClickListener;
-
-            textViewQuestion.setOnClickListener(this);
-
-            imageViewUpvote.setVisibility(View.INVISIBLE);
-            imageViewDownVote.setVisibility(View.INVISIBLE);
-            textViewVoteCounter.setVisibility(View.INVISIBLE);
+            imageViewStar = itemView.findViewById(R.id.postList_star);
         }
 
         @Override
         public void onClick(View view) {
             onPostClickListener.OnPostClick(getAdapterPosition());
             Log.e("post adapter", "on click listener");
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            onPostLongClickListener.OnPostLongClick(getAdapterPosition());
+            if (imageViewStar.getVisibility() == View.VISIBLE) {
+                imageViewStar.setVisibility(View.INVISIBLE);
+            } else {
+                imageViewStar.setVisibility(View.VISIBLE);
+            }
+            return false;
         }
     }
 

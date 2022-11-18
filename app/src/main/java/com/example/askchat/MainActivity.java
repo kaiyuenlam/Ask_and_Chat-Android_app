@@ -22,9 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.askchat.fragment.ChatFragment;
+import com.example.askchat.fragment.FavorPostDatabaseHelper;
 import com.example.askchat.fragment.HomeFragment;
 import com.example.askchat.fragment.MyAccountActivity;
 import com.example.askchat.fragment.MyFavorFragment;
+import com.example.askchat.fragment.MyFavorListListener;
 import com.example.askchat.fragment.MyQuestionFragment;
 import com.example.askchat.fragment.SettingFragment;
 import com.example.askchat.login.LoginActivity;
@@ -37,17 +39,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MyFavorListListener {
     ImageView imageViewFavor, imageViewChat, imageViewSetting;
     CardView cardView_logoutButton;
     ProgressBar progressBar;
-    //hello
-    //hi
+
+    FavorPostDatabaseHelper databaseHelper;
 
     //Fragment
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
-    private Fragment fragmentHome, fragmentMyQuestion, fragmentSetting, fragmentMyFavor, fragmentChat;
+    private Fragment fragmentHome, fragmentMyQuestion, fragmentSetting, fragmentChat;
+    private MyFavorFragment fragmentMyFavor;
 
     //Navigation Drawer
     DrawerLayout drawerLayout;
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
 
-    //User information
+    MyFavorListListener myFavorListListener;
 
 
     @Override
@@ -69,9 +72,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();  //action bar hidden
+        myFavorListListener = this;
         fragmentManager = getSupportFragmentManager();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseHelper = new FavorPostDatabaseHelper(this);
         getUserInformation();
         bindView();
         setOnClickListener();
@@ -117,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setAllSelectedFalse();
                 imageViewFavor.setSelected(true);
                 if (fragmentMyFavor == null) {
-                    fragmentMyFavor = new MyFavorFragment();
+                    fragmentMyFavor = new MyFavorFragment(databaseHelper);
                     fragmentTransaction.add(R.id.fragment_container_view, fragmentMyFavor);
                 } else {
                     fragmentTransaction.show(fragmentMyFavor);
@@ -172,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initHomeFragment() {
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentHome = new HomeFragment();
+        fragmentHome = new HomeFragment(databaseHelper, this);
         fragmentTransaction.add(R.id.fragment_container_view, fragmentHome);
         fragmentTransaction.commitAllowingStateLoss();
         progressBar.setVisibility(View.GONE);
@@ -236,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (item.getItemId()) {
                     case R.id.drawer_menu_home:
                         if (fragmentHome == null) {
-                            fragmentHome = new HomeFragment();
+                            fragmentHome = new HomeFragment(databaseHelper, myFavorListListener);
                             fragmentTransaction.add(R.id.fragment_container_view, fragmentHome);
                         } else {
                             fragmentTransaction.show(fragmentHome);
@@ -268,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     case R.id.drawer_menu_favor:
                         if (fragmentMyFavor == null) {
-                            fragmentMyFavor = new MyFavorFragment();
+                            fragmentMyFavor = new MyFavorFragment(databaseHelper);
                             fragmentTransaction.add(R.id.fragment_container_view, fragmentMyFavor);
                         } else {
                             fragmentTransaction.show(fragmentMyFavor);
@@ -286,5 +291,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void notifyDatabaseChanged() {
+        fragmentMyFavor.notifyChanged();
     }
 }

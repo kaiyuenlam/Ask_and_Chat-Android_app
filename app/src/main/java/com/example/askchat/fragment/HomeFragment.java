@@ -1,5 +1,7 @@
 package com.example.askchat.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -34,7 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements PostAdapter.OnPostClickListener{
+public class HomeFragment extends Fragment implements PostAdapter.OnPostClickListener, PostAdapter.OnPostLongClickListener{
 
     View view;
     ImageView imageViewSearchQuestionButton, imageViewAddPostButton;
@@ -50,6 +52,15 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostClickLis
 
     PostAdapter postAdapter;
     List<PostModel> listPost;
+
+    FavorPostDatabaseHelper databaseHelper;
+
+    MyFavorListListener myFavorListListener;
+
+    public HomeFragment(FavorPostDatabaseHelper databaseHelper, MyFavorListListener myFavorListListener) {
+        this.databaseHelper = databaseHelper;
+        this.myFavorListListener = myFavorListListener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +89,7 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostClickLis
         imageViewSearchQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //search();
             }
         });
 
@@ -91,7 +102,7 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostClickLis
 
         //set up recycler view
         listPost = new ArrayList<>();
-        postAdapter = new PostAdapter(listPost, this);
+        postAdapter = new PostAdapter(listPost, this, this, databaseHelper.getAllPost());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setAdapter(postAdapter);
         readPost();
@@ -146,5 +157,43 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostClickLis
         Intent intent = new Intent(getActivity().getApplicationContext(), PostActivity.class);
         intent.putExtra("postID", listPost.get(position).getPostID());
         startActivity(intent);
+    }
+
+    @Override
+    public void OnPostLongClick(int position) {
+        String postID = listPost.get(position).getPostID();
+        List<String> favorList = databaseHelper.getAllPost();
+        boolean isFavor = false;
+        for (int i = 0; i < favorList.size(); i++) {
+            if (postID.equals(favorList.get(i))) {
+                isFavor = true;
+                break;
+            }
+        }
+
+        if (isFavor) {
+            databaseHelper.deletePost(postID);
+        } else {
+            databaseHelper.insertPost(postID);
+        }
+        myFavorListListener.notifyDatabaseChanged();
+    }
+
+    private void search() {
+        String searchContent = editTextSearchQuestion.getText().toString().trim();
+
+        if (searchContent.isEmpty()) {
+            editTextSearchQuestion.requestFocus();
+        } else {
+            List<PostModel> searchResult = new ArrayList<>();
+            for (int i = 0; i < listPost.size(); i++) {
+                if (listPost.get(i).getQuestion().contains(searchContent)) {
+                    searchResult.add(listPost.get(i));
+                }
+            }
+            listPost.clear();
+            listPost = searchResult;
+            postAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -35,7 +35,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MessageModel messageModel = list.get(position);
         String time = messageModel.getDate();
-        if (messageModel.isSender()) {
+        if (messageModel.isSender() == 1) {
             holder.receiveTime.setVisibility(View.GONE);
             holder.textViewReceive.setVisibility(View.GONE);
             holder.frameLayoutReceive.setVisibility(View.GONE);
