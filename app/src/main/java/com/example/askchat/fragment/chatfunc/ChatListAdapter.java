@@ -53,6 +53,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserModel userModel = snapshot.getValue(UserModel.class);
+
                         byte[] bytes = Base64.decode(userModel.getEncodedUserIcon(), Base64.DEFAULT);
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         holder.imageViewUserIcon.setImageBitmap(bitmap);

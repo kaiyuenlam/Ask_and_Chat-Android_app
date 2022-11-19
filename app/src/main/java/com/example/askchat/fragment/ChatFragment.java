@@ -226,20 +226,23 @@ public class ChatFragment extends Fragment implements View.OnClickListener
                         }
                         contactsAdapter.notifyDataSetChanged();
                         friendsRequestAdapter.notifyDataSetChanged();
+
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
-                });
 
-        if (listFriendsRequest.size() == 0) {
-            textViewFriendsRequest.setVisibility(View.GONE);
-            recyclerViewFriendRequest.setVisibility(View.GONE);
-        } else {
-            textViewFriendsRequest.setVisibility(View.VISIBLE);
-            recyclerViewFriendRequest.setVisibility(View.VISIBLE);
-        }
+                    /*
+                    * if (listFriendsRequest.size() == 0) {
+                            textViewFriendsRequest.setVisibility(View.GONE);
+                            recyclerViewFriendRequest.setVisibility(View.GONE);
+                        } else {
+                            textViewFriendsRequest.setVisibility(View.VISIBLE);
+                            recyclerViewFriendRequest.setVisibility(View.VISIBLE);
+                        }
+                        * */
+                });
     }
 
     @Override
@@ -285,7 +288,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener
     @Override
     public void callDialog(ContactsAdapter adapter, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setTitle("Delete card");
+        builder.setTitle("Delete Friend");
         builder.setMessage("Are you sure you want to delete ?");
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
